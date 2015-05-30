@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 /Debug/
 /Build/include/
 /Build/lib/
 /Build/ThirdPartyLibs/
 /Default/
+=======
+*.[od]
+*.mk~
+logs/
+Default/
+Build/BebopRebopAPI
+>>>>>>> fc7d4cf3c62ddf5eb895513094771b567f5f56c8
