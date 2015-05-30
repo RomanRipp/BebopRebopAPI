@@ -8,15 +8,17 @@
 extern "C"
 {
 #include <stdio.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <libARSAL/ARSAL.h>
 #include <libARNetwork/ARNetwork.h>
 #include <libARNetworkAL/ARNetworkAL.h>
 #include <libARCommands/ARCommands.h>
 #include <libARDiscovery/ARDiscovery.h>
+#include <libARStream/ARSTREAM_Reader.h>
 }
 
 #include "CNetworkSettings.h"
+#include "CVideoSettings.h"
 #include "CCommandPacket.h"
 
 namespace rebop

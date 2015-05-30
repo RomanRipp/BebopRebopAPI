@@ -11,12 +11,14 @@ namespace rebop
 enum class EInboundBufferId
 {
 	INBOUND								= 127,
-	INBOUND_WITH_ACK					= 126
+	INBOUND_WITH_ACK					= 126,
+	INBOUND_VIDEO						= 125
 };
 enum class EOutboundBufferId
 {
 	OUTBOUND							= 10,
 	OUTBOUND_WITH_ACK					= 11,
+	OUTBOUND_VIDEO_ACK					= 13,
 };
 
 class CNetworkSettings
@@ -26,8 +28,10 @@ public:
 	// Indices for your arrays
 	const int OUTBOUND_INDEX 				= 0;
 	const int OUTBOUND_WITH_ACK_INDEX		= 1;
+	const int OUTBOUND_VIDEO_INDEX 			= 2;
 	const int INBOUND_INDEX					= 0;
 	const int INBOUND_WITH_ACK_INDEX 		= 1;
+	const int INBOUND_VIDEO_INDEX			= 2;
 
 	const char* TARGET_WIFI_IP_ADDRESS 		= "192.168.42.1";		// The default IP address when connecting over wifi
 	const char* TARGET_USB_IP_ADDRESS 		= "192.168.43.1";		// The default IP address when connecting over USB ethernet
@@ -40,8 +44,8 @@ public:
 	int m_inboundPort;		// This is the port we listen on. We'll tell the target what this is during discovery. By default this is 43210.
 
 	// These are parameters for your I/O buffers. Generally you'll have four I/O buffers: two for outbound messages, two for inbound messages, each with an ACK and NONACK version.
-	std::array<ARNETWORK_IOBufferParam_t, 2> m_outboundParameters;
-	std::array<ARNETWORK_IOBufferParam_t, 2> m_inboundParameters;
+	std::array<ARNETWORK_IOBufferParam_t, 3> m_outboundParameters;
+	std::array<ARNETWORK_IOBufferParam_t, 3> m_inboundParameters;
 
 	// Methods
 	CNetworkSettings();

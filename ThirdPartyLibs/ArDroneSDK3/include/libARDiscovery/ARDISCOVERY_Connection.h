@@ -44,6 +44,7 @@
 #define ARDISCOVERY_CONNECTION_JSON_ARSTREAM_MAX_ACK_INTERVAL_KEY           "arstream_max_ack_interval"
 #define ARDISCOVERY_CONNECTION_JSON_CONTROLLER_TYPE_KEY                     "controller_type"
 #define ARDISCOVERY_CONNECTION_JSON_CONTROLLER_NAME_KEY                     "controller_name"
+#define ARDISCOVERY_CONNECTION_JSON_DEVICE_ID_KEY                           "device_id"
 #define ARDISCOVERY_CONNECTION_JSON_C2D_UPDATE_PORT_KEY                     "c2d_update_port"
 #define ARDISCOVERY_CONNECTION_JSON_C2D_USER_PORT_KEY                       "c2d_user_port"
 #define ARDISCOVERY_CONNECTION_JSON_SKYCONTROLLER_VERSION                   "skycontroller_version"
@@ -81,8 +82,7 @@ typedef struct ARDISCOVERY_Connection_ConnectionData_t ARDISCOVERY_Connection_Co
 
 /**
  * @brief Create and initialize connection data
- * @param[in] callback for sent connection data
- * @param[in] callback for received connection data
+ * @param[in] callback Connection data management callback
  * @param[in] customData custom data
  * @param[out] error Error code
  * @return new connection data object

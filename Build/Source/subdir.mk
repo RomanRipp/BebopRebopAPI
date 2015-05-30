@@ -9,7 +9,9 @@ CPP_SRCS += \
 ../Source/CNetworkInterface.cpp \
 ../Source/CNetworkSettings.cpp \
 ../Source/CVehicleInterface.cpp \
-../Source/main.cpp 
+../Source/CVideoInterface.cpp \
+../Source/Utility.cpp \
+#../Source/main.cpp 
 
 OBJS += \
 ./Source/CBebopInterface.o \
@@ -17,7 +19,9 @@ OBJS += \
 ./Source/CNetworkInterface.o \
 ./Source/CNetworkSettings.o \
 ./Source/CVehicleInterface.o \
-./Source/main.o 
+./Source/CVideoInterface.o \
+./Source/Utility.o \
+#./Source/main.o
 
 CPP_DEPS += \
 ./Source/CBebopInterface.d \
@@ -25,7 +29,9 @@ CPP_DEPS += \
 ./Source/CNetworkInterface.d \
 ./Source/CNetworkSettings.d \
 ./Source/CVehicleInterface.d \
-./Source/main.d 
+./Source/CVideoInterface.d \
+./Source/Utility.d \
+#./Source/main.d
 
 
 # Each subdirectory must supply rules for building sources it contributes

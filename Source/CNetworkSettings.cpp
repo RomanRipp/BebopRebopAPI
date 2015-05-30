@@ -53,6 +53,16 @@ void CNetworkSettings::InitializeIOParameters()
 	m_outboundParameters[ OUTBOUND_WITH_ACK_INDEX ].dataCopyMaxSize 		= 128;
 	m_outboundParameters[ OUTBOUND_WITH_ACK_INDEX ].isOverwriting 			= 0;
 
+	// Outbound video
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].ID 						= (int)EOutboundBufferId::OUTBOUND_VIDEO_ACK;
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].dataType 					= ARNETWORKAL_FRAME_TYPE_UNINITIALIZED;
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].sendingWaitTimeMs 			= 0;
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].ackTimeoutMs 				= 0;
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].numberOfRetry 				= 0;
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].numberOfCell 				= 0;
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].dataCopyMaxSize 			= 0;
+	m_outboundParameters[ OUTBOUND_VIDEO_INDEX ].isOverwriting 				= 0;
+
 	// Inbound without ack
 	m_inboundParameters[ INBOUND_INDEX ].ID									= (int)EInboundBufferId::INBOUND;
 	m_inboundParameters[ INBOUND_INDEX ].dataType 							= eARNETWORKAL_FRAME_TYPE::ARNETWORKAL_FRAME_TYPE_DATA;
@@ -72,4 +82,14 @@ void CNetworkSettings::InitializeIOParameters()
 	m_inboundParameters[ INBOUND_WITH_ACK_INDEX ].numberOfCell 				= 20;
 	m_inboundParameters[ INBOUND_WITH_ACK_INDEX ].dataCopyMaxSize 			= 128;
 	m_inboundParameters[ INBOUND_WITH_ACK_INDEX ].isOverwriting 			= 0;
+
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].ID 							= (int)EInboundBufferId::INBOUND_VIDEO;
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].dataType 					= ARNETWORKAL_FRAME_TYPE_UNINITIALIZED;
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].sendingWaitTimeMs 			= 0;
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].ackTimeoutMs 				= 0;
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].numberOfRetry 				= 0;
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].numberOfCell 				= 0;
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].dataCopyMaxSize 				= 0;
+	m_inboundParameters[ INBOUND_VIDEO_INDEX ].isOverwriting 				= 0;
+
 }

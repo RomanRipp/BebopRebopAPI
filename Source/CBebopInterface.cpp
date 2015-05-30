@@ -1,6 +1,6 @@
 // Includes
 #include "CBebopInterface.h"
-
+#include "CVideoInterface.h"
 #include "Utility.h"
 
 // Namespaces
@@ -15,10 +15,26 @@ CBebopInterface::~CBebopInterface()
 {
 }
 
+void CBebopInterface::Initialize()
+{
+	// Initialize the network interface
+	m_isConnected = m_networkInterface.Initialize();
+}
 
 void CBebopInterface::Update()
 {
 	// TODO: Create a low frequency thread to manage reconnection behaviour and treat the entire interface as a subsystem
+}
+
+void CBebopInterface::Cleanup()
+{
+	// Shutdown the network
+	m_networkInterface.Cleanup();
+}
+
+bool CBebopInterface::IsConnected()
+{
+	return m_isConnected;
 }
 
 bool CBebopInterface::Takeoff()
@@ -26,6 +42,7 @@ bool CBebopInterface::Takeoff()
 	CCommandPacket packet( 128 );
 
 	// Generate command
+
 	eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_Generator_GenerateARDrone3PilotingTakeOff(
 			packet.m_pData,
 			packet.m_bufferSize,
@@ -515,3 +532,73 @@ bool CBebopInterface::ResetGpsHome()
 
 	return true;
 }
+
+bool CBebopInterface::StartVideo()
+{
+	if (!m_videoInterface.StartVideo(m_networkInterface))
+	{
+		LOG ( ERROR ) << "Failed to start video";
+		return false;
+	}
+
+	CCommandPacket packet( 128 );
+
+	// Generate command
+	eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_Generator_GenerateARDrone3MediaStreamingVideoEnable(
+			packet.m_pData,
+			packet.m_bufferSize,
+			&packet.m_dataSize,
+			1);
+
+	if( cmdError == ARCOMMANDS_GENERATOR_OK )
+	{
+		// Command should be acknowledged
+		if( !m_networkInterface.SendData( packet, EOutboundBufferId::OUTBOUND_WITH_ACK, true ) )
+		{
+			LOG( ERROR ) << "Failed to send StreamingVideoEnable command.";
+			return false;
+		}
+	}
+	else
+	{
+		LOG( ERROR ) << "Failed to generate StreamingVideoEnable command. Err: " << cmdError;
+		return false;
+	}
+
+	return true;
+}
+
+bool CBebopInterface::StopVideo()
+{
+	CCommandPacket packet( 128 );
+
+	// Generate command
+	eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_Generator_GenerateARDrone3MediaStreamingVideoEnable(
+			packet.m_pData,
+			packet.m_bufferSize,
+			&packet.m_dataSize,
+			0);
+
+	if( cmdError == ARCOMMANDS_GENERATOR_OK )
+	{
+		// Command should be acknowledged
+		if( !m_networkInterface.SendData( packet, EOutboundBufferId::OUTBOUND_WITH_ACK, true ) )
+		{
+			LOG( ERROR ) << "Failed to send StreamingVideoDisable command.";
+			return false;
+		}
+	}
+	else
+	{
+		LOG( ERROR ) << "Failed to generate StreamingVideoDisable command. Err: " << cmdError;
+		return false;
+	}
+
+	return m_videoInterface.StopVideo(m_networkInterface);
+}
+
+TFrame CBebopInterface::GetVideoFrame() const
+{
+	return m_videoInterface.GetFrame();
+}
+

@@ -42,11 +42,19 @@ all: BebopRebopAPI
 
 # Tool invocations
 BebopRebopAPI: $(OBJS) $(USER_OBJS)
+	@echo 'Objects: $(OBJS), $(USER_OBJS)'
 	@echo 'Building target: $@'
-	@echo 'Invoking: GCC C++ Linker'
+	@echo 'Invoking: GCC C++ Linker...'
 	g++ -L../ThirdPartyLibs/ArDroneSDK3/lib -o "BebopRebopAPI" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
+	
+#Lib Target	
+#all: BebopRebopAPI
+# Tool invocations
+#BebopRebopAPI: $(OBJS) $(USER_OBJS)
+#	@echo 'Creating a lib:'
+	
 
 # Other Targets
 clean:

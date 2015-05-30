@@ -89,7 +89,7 @@ bool CNetworkInterface::PerformNetworkDiscovery()
 	// If successful, perform network discovery with the target
 	if( !failed )
 	{
-		eARDISCOVERY_ERROR err = ARDISCOVERY_Connection_ControllerConnection( discoveryData, m_networkSettings.DISCOVERY_PORT, m_networkSettings.TARGET_USB_IP_ADDRESS );
+		eARDISCOVERY_ERROR err = ARDISCOVERY_Connection_ControllerConnection( discoveryData, m_networkSettings.DISCOVERY_PORT, m_networkSettings.TARGET_WIFI_IP_ADDRESS );
 
 		if( err != ARDISCOVERY_OK )
 		{
@@ -134,13 +134,21 @@ bool CNetworkInterface::InitializeNetworkManagers()
 	}
 
 	// Initialize the ARNetworkALManager
-	netAlError = ARNETWORKAL_Manager_InitWifiNetwork( m_pNetworkALManager, m_networkSettings.TARGET_USB_IP_ADDRESS, m_networkSettings.m_outboundPort, m_networkSettings.m_inboundPort, timeoutSecs );
+	netAlError = ARNETWORKAL_Manager_InitWifiNetwork( m_pNetworkALManager, m_networkSettings.TARGET_WIFI_IP_ADDRESS, m_networkSettings.m_outboundPort, m_networkSettings.m_inboundPort, timeoutSecs );
 
 	if( netAlError != ARNETWORKAL_OK )
 	{
 		LOG( ERROR ) << "Failed to initialize Network Abstraction Layer Manager.";
 		return false;
 	}
+
+    ARSTREAM_Reader_InitStreamDataBuffer (&(m_networkSettings.m_inboundParameters.at(2)),
+    		(int) EInboundBufferId::INBOUND_VIDEO,
+    		CVideoSettings::AR_STREAM_FRAG_SIZE,
+    		CVideoSettings::AR_STREAM_FRAG_NB);
+
+    ARSTREAM_Reader_InitStreamAckBuffer (&(m_networkSettings.m_outboundParameters.at(2)),
+    		(int)EOutboundBufferId::OUTBOUND_VIDEO_ACK);
 
 	// Create the ARNetworkManager.
 	m_pNetworkManager = ARNETWORK_Manager_New(

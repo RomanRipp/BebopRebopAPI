@@ -36,9 +36,11 @@
 #ifndef _LIBARCOMMANDS_ARCOMMANDS_H_
 #define _LIBARCOMMANDS_ARCOMMANDS_H_
 
+
 #include <libARCommands/ARCOMMANDS_Decoder.h>
 #include <libARCommands/ARCOMMANDS_Generator.h>
 #include <libARCommands/ARCOMMANDS_Types.h>
 #include <libARCommands/ARCOMMANDS_Filter.h>
+#include <libARCommands/ARCOMMANDS_Version.h>
 
 #endif /* _LIBARCOMMANDS_ARCOMMANDS_H_ */

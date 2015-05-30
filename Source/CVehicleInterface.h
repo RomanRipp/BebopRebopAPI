@@ -2,29 +2,24 @@
 
 // Includes
 #include "CNetworkInterface.h"
+#include "CVideoInterface.h"
 #include "Utility.h"
 
-namespace rebop
-{
+namespace rebop {
 
-class CVehicleInterface
-{
+class CVehicleInterface {
 public:
 	// Pointers
 
 	// Attributes
 	CNetworkInterface m_networkInterface;
+	CVideoInterface m_videoInterface;
 
 	bool m_isConnected;
 
 	//Methods
 	CVehicleInterface();
 	virtual ~CVehicleInterface();
-
-	virtual void Initialize();
-	virtual void Update();
-	virtual void Cleanup();
-	virtual bool IsConnected();
 };
 
 }

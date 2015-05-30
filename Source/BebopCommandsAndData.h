@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+#include "libARCommands/ARCOMMANDS_Types.h"
+
 // Enumerations
 namespace rebop
 {
@@ -123,6 +126,75 @@ namespace rebop
 					INDOOR		= 0,
 					OUTDOOR		= 1
 				};
+			}
+
+			namespace video
+			{
+
+				class TFrame
+				{
+				public:
+					TFrame()
+					: m_frameData(0),
+					  m_frameDataSize(0),
+					  m_numberOfSkippedFrames(-1),
+					  m_isFlushFrame(-1),
+					  m_isValid(false)
+					{
+
+					}
+
+					TFrame(uint8_t* frameData, uint32_t frameDataSize, int numberOfSkippedFrames, int isFlushFrame)
+						: m_frameData(frameData),
+						  m_frameDataSize(frameDataSize),
+						  m_numberOfSkippedFrames(numberOfSkippedFrames),
+						  m_isFlushFrame(isFlushFrame),
+						  m_isValid(true)
+					{
+
+					}
+
+					~TFrame()
+					{
+//						if (m_frameData != nullptr)
+//						{
+//							delete m_frameData;
+//						}
+					}
+
+					uint8_t* GetData() const
+					{
+						return m_frameData;
+					}
+
+					uint32_t GetFrameDataSize() const
+					{
+						return m_frameDataSize;
+					}
+
+					int GetNumberOfSkippedFrames() const
+					{
+						return m_numberOfSkippedFrames;
+					}
+
+					bool IsFlushFrame() const
+					{
+						return (m_isFlushFrame > 0);
+					}
+
+					bool IsValid() const
+					{
+						return m_isValid;
+					}
+
+				private:
+					uint8_t* m_frameData;
+					uint32_t m_frameDataSize;
+					int 	 m_numberOfSkippedFrames;
+					int 	 m_isFlushFrame;
+					bool 	 m_isValid;
+				};
+
 			}
 		}
 	}

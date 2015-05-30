@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -larsdk3 -lpthread
+LIBS := -larsal -larcommands -larnetwork -larnetworkal -lardiscovery -larstream -lpthread
 
