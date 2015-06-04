@@ -32,8 +32,9 @@ public:
 	// Indices for your arrays
 	const int OUTBOUND_INDEX 				= 0;
 	const int OUTBOUND_WITH_ACK_INDEX		= 1;
-	const int EMERGENCY_INDEX				= 2;
-	const int OUTBOUND_VIDEO_INDEX 			= 3;
+	const int OUTBOUND_VIDEO_INDEX 			= 2;
+
+	const int EMERGENCY_INDEX				= 3;
 
 	const int INBOUND_INDEX					= 0;
 	const int INBOUND_WITH_ACK_INDEX 		= 1;

@@ -12,6 +12,7 @@
 
 using namespace rebop::commands::bebop::navigation;
 using namespace rebop::commands::bebop::video;
+using namespace rebop::state::bebop;
 
 namespace rebop
 {
@@ -20,7 +21,7 @@ class IBebopInterface
 public:
 	virtual ~IBebopInterface(){}
 
-	virtual void Initialize() = 0;
+	virtual bool Initialize() = 0;
 	virtual void Update() = 0;
 	virtual void Cleanup() = 0;
 	virtual bool IsConnected() = 0;
@@ -46,5 +47,7 @@ public:
 	virtual bool StopVideo() = 0;
 
 	virtual TFrame GetVideoFrame() const = 0;
+	virtual bool GetFlyingState(FlyingState& state) const = 0;
+	virtual bool GetBatteryCharge(int& charge) const = 0;
 };
 }

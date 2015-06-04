@@ -18,7 +18,7 @@ public:
 	CBebopInterface();
 	virtual ~CBebopInterface();
 
-	virtual void Initialize();
+	virtual bool Initialize();
 	virtual void Update();
 	virtual void Cleanup();
 	virtual bool IsConnected();
@@ -44,6 +44,8 @@ public:
 	virtual bool StopVideo();
 
 	virtual TFrame GetVideoFrame() const;
+	virtual bool GetFlyingState(FlyingState& state) const;
+	virtual bool GetBatteryCharge(int& charge) const;
 };
 
 }

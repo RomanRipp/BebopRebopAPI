@@ -9,14 +9,11 @@ CPP_SRCS += \
 ../Source/CNetworkInterface.cpp \
 ../Source/CNetworkSettings.cpp \
 ../Source/CVehicleInterface.cpp \
-<<<<<<< HEAD
 ../Source/CVideoInterface.cpp \
-../Source/Utility.cpp \
-#../Source/main.cpp 
-=======
+../Source/CBebopCallbacks.cpp \
+../Source/CBebopState.cpp \
 ../Source/Utility.cpp \
 ../Source/main.cpp 
->>>>>>> fc7d4cf3c62ddf5eb895513094771b567f5f56c8
 
 OBJS += \
 ./Source/CBebopInterface.o \
@@ -24,14 +21,11 @@ OBJS += \
 ./Source/CNetworkInterface.o \
 ./Source/CNetworkSettings.o \
 ./Source/CVehicleInterface.o \
-<<<<<<< HEAD
 ./Source/CVideoInterface.o \
+./Source/CBebopCallbacks.o \
+./Source/CBebopState.o \
 ./Source/Utility.o \
-#./Source/main.o
-=======
-./Source/Utility.o \
-./Source/main.o 
->>>>>>> fc7d4cf3c62ddf5eb895513094771b567f5f56c8
+./Source/main.o
 
 CPP_DEPS += \
 ./Source/CBebopInterface.d \
@@ -39,15 +33,11 @@ CPP_DEPS += \
 ./Source/CNetworkInterface.d \
 ./Source/CNetworkSettings.d \
 ./Source/CVehicleInterface.d \
-<<<<<<< HEAD
 ./Source/CVideoInterface.d \
+./Source/CBebopCallbacks.d \
+./Source/CBebopState.d \
 ./Source/Utility.d \
-#./Source/main.d
-=======
-./Source/Utility.d \
-./Source/main.d 
->>>>>>> fc7d4cf3c62ddf5eb895513094771b567f5f56c8
-
+./Source/main.d
 
 # Each subdirectory must supply rules for building sources it contributes
 Source/%.o: ../Source/%.cpp

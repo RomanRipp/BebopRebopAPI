@@ -43,6 +43,8 @@ private:
 	class CVideoStream
 	{
 	public:
+		std::atomic<bool> m_lock;
+
 		uint32_t m_videoFrameSize;
 		uint8_t *m_videoFrame;
 		FILE *m_videoFile;

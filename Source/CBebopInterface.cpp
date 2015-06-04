@@ -15,34 +15,29 @@ CBebopInterface::~CBebopInterface()
 {
 }
 
-void CBebopInterface::Initialize()
+bool CBebopInterface::Initialize()
 {
 	// Initialize the network interface
 	m_isConnected = m_networkInterface.Initialize();
-
-	//Send "CommonCommonAllStates" command to avoid drifting
-	CCommandPacket packet( 128 );
-
-	// Generate command
-	eARCOMMANDS_GENERATOR_ERROR cmdError = ARCOMMANDS_Generator_GenerateCommonCommonAllStates(
-			packet.m_pData,
-			packet.m_bufferSize,
-			&packet.m_dataSize );
-
-	if( cmdError == ARCOMMANDS_GENERATOR_OK )
+	if (!m_isConnected)
 	{
-		// Command should be acknowledged
-		if( !m_networkInterface.SendData( packet, EOutboundBufferId::OUTBOUND_WITH_ACK, true ) )
-		{
-			LOG( ERROR ) << "Failed to send anti-drift command.";
-		}
-	}
-	else
-	{
-		LOG( ERROR ) << "Failed to generate anti-drift command. Err: " << cmdError;
+		LOG(ERROR) << "Failed to initialize network interface";
+		return false;
 	}
 
-	LOG( INFO ) << "Sent anti-drift command.";
+	if (!CVehicleInterface::CommonCommonAllStates())
+	{
+		LOG(ERROR) << "Failed to send anti drift command";
+		return false;
+	}
+
+	if (!m_bebopCallbacks.Init())
+	{
+		LOG(ERROR) << "Failed to Init callbacks";
+		return false;
+	}
+
+	return true;
 }
 
 void CBebopInterface::Update()
@@ -624,5 +619,31 @@ bool CBebopInterface::StopVideo()
 TFrame CBebopInterface::GetVideoFrame() const
 {
 	return m_videoInterface.GetFrame();
+}
+
+bool CBebopInterface::GetFlyingState(FlyingState& state) const
+{
+	auto bebopState(m_bebopCallbacks.GetBebopState());
+	if (m_bebopCallbacks.GetBebopState().m_isValid)
+	{
+		state = m_bebopCallbacks.GetBebopState().m_flyingState;
+		return true;
+	}
+
+	LOG(ERROR) << "Failed to get bebop state";
+	return false;
+}
+
+bool CBebopInterface::GetBatteryCharge(int& charge) const
+{
+	auto bebopState(m_bebopCallbacks.GetBebopState());
+	if (m_bebopCallbacks.GetBebopState().m_isValid)
+	{
+		charge = m_bebopCallbacks.GetBebopState().m_batteryCharge;
+		return true;
+	}
+
+	LOG(ERROR) << "Failed to get bebop state";
+	return false;
 }
 

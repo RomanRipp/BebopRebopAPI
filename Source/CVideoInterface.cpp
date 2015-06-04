@@ -27,6 +27,8 @@ CVideoInterface::~CVideoInterface() {
 
 bool CVideoInterface::StartVideo(const CNetworkInterface& network)
 {
+	LOG (INFO) << "Starting video stream";
+
     eARSTREAM_ERROR err = ARSTREAM_OK;
 
     CVideoSettings videoSettings;
@@ -36,6 +38,7 @@ bool CVideoInterface::StartVideo(const CNetworkInterface& network)
     m_VideoStream->m_videoFrame = (uint8_t*) malloc (m_VideoStream->m_videoFrameSize);
     if (!m_VideoStream->m_videoFrame)
     {
+    	LOG(ERROR) << "Failed to create video frame";
     	return false;
     }
 
@@ -76,11 +79,14 @@ bool CVideoInterface::StartVideo(const CNetworkInterface& network)
 		return false;
 	}
 
+	LOG(INFO) << "Video frame started";
     return true;
 }
 
 bool CVideoInterface::StopVideo(const CNetworkInterface& network)
 {
+	LOG (INFO) << "Stopping video stream";
+
 	if (m_streamReader)
 	{
 		ARSTREAM_Reader_StopReader(m_streamReader);
@@ -109,7 +115,9 @@ bool CVideoInterface::StopVideo(const CNetworkInterface& network)
 		delete m_VideoStream->m_videoFrame;
 		m_VideoStream->m_videoFrame = NULL;
 	}
-	return false;
+
+	LOG (INFO) << "Video stream stopped";
+	return true;
 }
 
 uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
@@ -126,18 +134,12 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
     switch(cause)
     {
         case ARSTREAM_READER_CAUSE_FRAME_COMPLETE:
-            /* Here, the mjpeg video frame is in the "frame" pointer, with size "frameSize" bytes
-             You can do what you want, but keep it as short as possible, as the video is blocked until you return from this callback.
-             Typically, you will either copy the frame and return the same buffer to the library, or store the buffer
-             in a fifo for pending operations, and provide a new one.
-             In this sample, we do nothing and just pass the buffer back*/
-
             ret = videoStream->m_videoFrame;
             *newBufferCapacity = videoStream->m_videoFrameSize;
 
             if (frame)
             {
-            	LOG( INFO ) << "Video frame received";
+            	util::SpinLock lock(videoStream->m_lock);
             	commands::bebop::video::TFrame tFrame(frame, frameSize, isFlushFrame, numberOfSkippedFrames);
 
 				videoStream->m_videoFrames.push_back(tFrame);
@@ -176,10 +178,9 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
 
 commands::bebop::video::TFrame CVideoInterface::GetFrame() const
 {
-
+	util::SpinLock lock(m_VideoStream->m_lock);
 	if (m_VideoStream->m_videoFrames.size() > 0)
 	{
-		LOG( INFO ) << "Frame available";
 		return m_VideoStream->m_videoFrames.back();
 	}
 

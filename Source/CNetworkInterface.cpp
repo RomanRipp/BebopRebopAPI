@@ -146,12 +146,12 @@ bool CNetworkInterface::InitializeNetworkManagers()
 		return false;
 	}
 
-    ARSTREAM_Reader_InitStreamDataBuffer (&(m_networkSettings.m_inboundParameters.at(2)),
+    ARSTREAM_Reader_InitStreamDataBuffer (&(m_networkSettings.m_inboundParameters[m_networkSettings.INBOUND_VIDEO_INDEX]),
     		(int) EInboundBufferId::INBOUND_VIDEO,
     		CVideoSettings::AR_STREAM_FRAG_SIZE,
     		CVideoSettings::AR_STREAM_FRAG_NB);
 
-    ARSTREAM_Reader_InitStreamAckBuffer (&(m_networkSettings.m_outboundParameters.at(2)),
+    ARSTREAM_Reader_InitStreamAckBuffer (&(m_networkSettings.m_outboundParameters[m_networkSettings.OUTBOUND_VIDEO_INDEX]),
     		(int)EOutboundBufferId::OUTBOUND_VIDEO_ACK);
 
 	// Create the ARNetworkManager.
