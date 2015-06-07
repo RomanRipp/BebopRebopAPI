@@ -124,10 +124,10 @@ namespace navigation{
 namespace video
 {
 
-	class TFrame
+	class TRawFrame
 	{
 	public:
-		TFrame()
+		TRawFrame()
 		: m_frameData(0),
 		  m_frameDataSize(0),
 		  m_numberOfSkippedFrames(-1),
@@ -137,7 +137,7 @@ namespace video
 
 		}
 
-		TFrame(uint8_t* frameData, uint32_t frameDataSize, int numberOfSkippedFrames, int isFlushFrame)
+		TRawFrame(uint8_t* frameData, uint32_t frameDataSize, int numberOfSkippedFrames, int isFlushFrame)
 			: m_frameData(frameData),
 			  m_frameDataSize(frameDataSize),
 			  m_numberOfSkippedFrames(numberOfSkippedFrames),
@@ -147,17 +147,17 @@ namespace video
 
 		}
 
-		~TFrame()
+		~TRawFrame()
 		{
 
 		}
 
-		uint8_t* GetData() const
+		uint8_t* GetRawData() const
 		{
 			return m_frameData;
 		}
 
-		uint32_t GetFrameDataSize() const
+		uint32_t GetRawFrameDataSize() const
 		{
 			return m_frameDataSize;
 		}
@@ -183,6 +183,23 @@ namespace video
 		int 	 m_numberOfSkippedFrames;
 		int 	 m_isFlushFrame;
 		bool 	 m_isValid;
+	};
+
+	class TDecodedFrame : public TRawFrame
+	{
+	public:
+		TDecodedFrame()
+		{
+
+		}
+
+		~TDecodedFrame()
+		{
+
+		}
+
+	private:
+
 	};
 }
 }
@@ -213,14 +230,6 @@ namespace bebop{
 		{
 
 		}
-
-//		TBebopStateCantainer(int batteryCharge, FlyingState flyingState)
-//			: m_isValid(true),
-//			  m_batteryCharge(batteryCharge),
-//			  m_flyingState(flyingState)
-//		{
-//
-//		}
 
 		~TBebopStateCantainer()
 		{

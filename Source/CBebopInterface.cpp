@@ -616,9 +616,9 @@ bool CBebopInterface::StopVideo()
 	return m_videoInterface.StopVideo(m_networkInterface);
 }
 
-TFrame CBebopInterface::GetVideoFrame() const
+IVideoInterface CBebopInterface::GetVideo() const
 {
-	return m_videoInterface.GetFrame();
+	return m_videoInterface;
 }
 
 bool CBebopInterface::GetFlyingState(FlyingState& state) const

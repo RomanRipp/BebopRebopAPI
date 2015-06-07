@@ -14,15 +14,17 @@ extern "C"
 #include <libARNetwork/ARNetwork.h>
 #include <libARStream/ARStream.h>
 }
-
-#include "BebopCommandsAndData.h"
-
 #include <list>
 #include <atomic>
 
+#include "IVideoInterface.h"
+#include "CVideoDecoder.h"
+
+
 namespace rebop {
 
-class CVideoInterface {
+class CVideoInterface : public IVideoInterface
+{
 public:
 	CVideoInterface();
 	CVideoInterface(ARNETWORK_Manager_t* netManager);
@@ -31,7 +33,8 @@ public:
 	virtual bool StartVideo(const CNetworkInterface& network);
 	virtual bool StopVideo(const CNetworkInterface& network);
 
-	virtual commands::bebop::video::TFrame GetFrame() const;
+	virtual commands::bebop::video::TDecodedFrame GetDecodedFrame() const override;
+	virtual commands::bebop::video::TRawFrame GetRawFrame() const override;
 
 private:
 	static uint8_t* FrameCompleteCallback (eARSTREAM_READER_CAUSE cause, uint8_t *frame, uint32_t frameSize, int numberOfSkippedFrames, int isFlushFrame, uint32_t *newBufferCapacity, void *custom);
@@ -39,6 +42,7 @@ private:
 	ARSAL_Thread_t m_videoRxThread;
 	ARSAL_Thread_t m_videoTxThread;
 	ARSTREAM_Reader_t *m_streamReader;
+	CVideoDecoder m_videoDecoder;
 
 	class CVideoStream
 	{
@@ -48,7 +52,8 @@ private:
 		uint32_t m_videoFrameSize;
 		uint8_t *m_videoFrame;
 		FILE *m_videoFile;
-		std::list<commands::bebop::video::TFrame> m_videoFrames;
+		std::list<commands::bebop::video::TRawFrame> m_rawFrames;
+		std::list<commands::bebop::video::TDecodedFrame> m_decodedFrames;
 	}* m_VideoStream;
 };
 

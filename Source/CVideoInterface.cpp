@@ -140,13 +140,13 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
             if (frame)
             {
             	util::SpinLock lock(videoStream->m_lock);
-            	commands::bebop::video::TFrame tFrame(frame, frameSize, isFlushFrame, numberOfSkippedFrames);
+            	commands::bebop::video::TRawFrame tFrame(frame, frameSize, isFlushFrame, numberOfSkippedFrames);
 
-				videoStream->m_videoFrames.push_back(tFrame);
+				videoStream->m_rawFrames.push_back(tFrame);
 
-            	if (videoStream->m_videoFrames.size() > CVideoSettings::VIDEO_CONTAINER_SIZE)
+            	if (videoStream->m_rawFrames.size() > CVideoSettings::VIDEO_CONTAINER_SIZE)
             	{
-            		videoStream->m_videoFrames.pop_front();
+            		videoStream->m_rawFrames.pop_front();
             	}
             }
 
@@ -176,17 +176,30 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
     return ret;
 }
 
-commands::bebop::video::TFrame CVideoInterface::GetFrame() const
+commands::bebop::video::TDecodedFrame CVideoInterface::GetDecodedFrame() const
 {
 	util::SpinLock lock(m_VideoStream->m_lock);
-	if (m_VideoStream->m_videoFrames.size() > 0)
+	if (m_VideoStream->m_decodedFrames.size() > 0)
 	{
-		return m_VideoStream->m_videoFrames.back();
+		return m_VideoStream->m_decodedFrames.back();
 	}
 
 	LOG( ERROR ) << "No Frames Available!";
-	return commands::bebop::video::TFrame();
+	return commands::bebop::video::TDecodedFrame();
 }
+
+commands::bebop::video::TRawFrame CVideoInterface::GetRawFrame() const
+{
+	util::SpinLock lock(m_VideoStream->m_lock);
+	if (m_VideoStream->m_rawFrames.size() > 0)
+	{
+		return m_VideoStream->m_rawFrames.back();
+	}
+
+	LOG( ERROR ) << "No Frames Available!";
+	return commands::bebop::video::TRawFrame();
+}
+
 
 } /* namespace rebop */
 

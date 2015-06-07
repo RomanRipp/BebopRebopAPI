@@ -12,8 +12,9 @@ CPP_SRCS += \
 ../Source/CVideoInterface.cpp \
 ../Source/CBebopCallbacks.cpp \
 ../Source/CBebopState.cpp \
+../Source/CVideoDecoder.cpp \
 ../Source/Utility.cpp \
-../Source/main.cpp 
+../Source/main.cpp \
 
 OBJS += \
 ./Source/CBebopInterface.o \
@@ -23,9 +24,10 @@ OBJS += \
 ./Source/CVehicleInterface.o \
 ./Source/CVideoInterface.o \
 ./Source/CBebopCallbacks.o \
+./Source/CVideoDecoder.o \
 ./Source/CBebopState.o \
 ./Source/Utility.o \
-./Source/main.o
+./Source/main.o \
 
 CPP_DEPS += \
 ./Source/CBebopInterface.d \
@@ -35,15 +37,16 @@ CPP_DEPS += \
 ./Source/CVehicleInterface.d \
 ./Source/CVideoInterface.d \
 ./Source/CBebopCallbacks.d \
+./Source/CVideoDecoder.d \
 ./Source/CBebopState.d \
 ./Source/Utility.d \
-./Source/main.d
+./Source/main.d \
 
 # Each subdirectory must supply rules for building sources it contributes
 Source/%.o: ../Source/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I../ThirdPartyLibs/ArDroneSDK3/include -I../ThirdPartyLibs/rapidjson/include -I../ThirdPartyLibs/easyloggingpp/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -I /usr/local/include -I../ThirdPartyLibs/ArDroneSDK3/include -I../ThirdPartyLibs/rapidjson/include -I../ThirdPartyLibs/easyloggingpp/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
