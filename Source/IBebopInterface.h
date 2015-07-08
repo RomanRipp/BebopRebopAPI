@@ -47,7 +47,7 @@ public:
 	virtual bool StartVideo() = 0;
 	virtual bool StopVideo() = 0;
 
-	virtual IVideoInterface GetVideo() const = 0;
+	virtual IVideoInterface& GetVideo() = 0;
 	virtual bool GetFlyingState(FlyingState& state) const = 0;
 	virtual bool GetBatteryCharge(int& charge) const = 0;
 };

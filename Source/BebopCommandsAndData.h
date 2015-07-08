@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <vector>
 #include "libARCommands/ARCOMMANDS_Types.h"
 
 // Enumerations
@@ -132,74 +133,74 @@ namespace video
 		  m_frameDataSize(0),
 		  m_numberOfSkippedFrames(-1),
 		  m_isFlushFrame(-1),
-		  m_isValid(false)
-		{
-
-		}
-
+		  m_width(640),
+		  m_height(368),
+		  m_isValid(false){}
 		TRawFrame(uint8_t* frameData, uint32_t frameDataSize, int numberOfSkippedFrames, int isFlushFrame)
 			: m_frameData(frameData),
 			  m_frameDataSize(frameDataSize),
 			  m_numberOfSkippedFrames(numberOfSkippedFrames),
 			  m_isFlushFrame(isFlushFrame),
-			  m_isValid(true)
-		{
-
-		}
-
+			  m_isValid(true) {}
 		~TRawFrame()
 		{
-
+			//delete m_frameData;
 		}
-
-		uint8_t* GetRawData() const
-		{
-			return m_frameData;
-		}
-
-		uint32_t GetRawFrameDataSize() const
-		{
-			return m_frameDataSize;
-		}
-
-		int GetNumberOfSkippedFrames() const
-		{
-			return m_numberOfSkippedFrames;
-		}
-
-		bool IsFlushFrame() const
-		{
-			return (m_isFlushFrame > 0);
-		}
-
-		bool IsValid() const
-		{
-			return m_isValid;
-		}
+		uint8_t* GetRawData() const { return m_frameData; }
+		uint32_t GetRawFrameDataSize() const { return m_frameDataSize; }
+		int GetNumberOfSkippedFrames() const { return m_numberOfSkippedFrames; }
+		int GetWidth() const { return m_width; }
+		int GetHeight() const { return m_height; }
+		bool IsFlushFrame() const { return (m_isFlushFrame > 0); }
+		bool IsValid() const { return m_isValid; }
 
 	private:
 		uint8_t* m_frameData;
 		uint32_t m_frameDataSize;
 		int 	 m_numberOfSkippedFrames;
 		int 	 m_isFlushFrame;
+		int 	 m_width;
+		int 	 m_height;
 		bool 	 m_isValid;
+	};
+
+	enum class EncodingType
+	{
+		YVU,
+		RGBA
+	};
+
+	struct FrameConponent
+	{
+	    uint8_t *data; /**< data buffer*/
+	    uint32_t lineSize; /**< size of each line of the component */
+	    uint32_t size; /**< size of the buffer */
 	};
 
 	class TDecodedFrame : public TRawFrame
 	{
 	public:
-		TDecodedFrame()
-		{
+		TDecodedFrame() : TRawFrame() {}
+		TDecodedFrame(const TRawFrame& rawFrame,
+				const EncodingType encodingType,
+				uint32_t width,
+				uint32_t height,
+				std::vector<FrameConponent> components) : TRawFrame(rawFrame),
+						m_encodingType(encodingType),
+						m_width(width),
+						m_height(height),
+						m_components(components) {}
+		~TDecodedFrame(){}
 
-		}
-
-		~TDecodedFrame()
-		{
-
-		}
+		EncodingType GetEncodingType() const { return m_encodingType; }
+		uint32_t GetWidth() const { return m_width; }
+		uint32_t GetHeight() const { return m_height; }
 
 	private:
-
+		EncodingType m_encodingType;
+		uint32_t m_width;
+		uint32_t m_height;
+		std::vector<FrameConponent> m_components;
 	};
 }
 }

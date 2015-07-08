@@ -79,7 +79,7 @@ bool CVideoInterface::StartVideo(const CNetworkInterface& network)
 		return false;
 	}
 
-	LOG(INFO) << "Video frame started";
+	LOG(INFO) << "Video stream started";
     return true;
 }
 
@@ -176,28 +176,36 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
     return ret;
 }
 
-commands::bebop::video::TDecodedFrame CVideoInterface::GetDecodedFrame() const
+bool CVideoInterface::HasFrame() const
 {
 	util::SpinLock lock(m_VideoStream->m_lock);
-	if (m_VideoStream->m_decodedFrames.size() > 0)
-	{
-		return m_VideoStream->m_decodedFrames.back();
-	}
-
-	LOG( ERROR ) << "No Frames Available!";
-	return commands::bebop::video::TDecodedFrame();
+	return (m_VideoStream->m_rawFrames.size() > 0);
 }
 
-commands::bebop::video::TRawFrame CVideoInterface::GetRawFrame() const
+commands::bebop::video::TDecodedFrame CVideoInterface::GetDecodedFrame()
+{
+	const auto& rawFrame(GetYUVFrame());
+
+	return m_videoDecoder.DecodeFrame(rawFrame);
+}
+
+commands::bebop::video::TRawFrame CVideoInterface::GetYUVFrame() const
 {
 	util::SpinLock lock(m_VideoStream->m_lock);
-	if (m_VideoStream->m_rawFrames.size() > 0)
+	if (m_VideoStream->m_rawFrames.size() < 1)
 	{
-		return m_VideoStream->m_rawFrames.back();
+		LOG( ERROR ) << "No Frames Available!";
+		return commands::bebop::video::TRawFrame();
 	}
 
-	LOG( ERROR ) << "No Frames Available!";
-	return commands::bebop::video::TRawFrame();
+	auto rawFrame(m_VideoStream->m_rawFrames.back());
+	m_VideoStream->m_rawFrames.pop_back();
+	return rawFrame;
+}
+
+commands::bebop::video::TRawFrame CVideoInterface::GetRGBFrame() const
+{
+	return m_videoDecoder.YVUtoRGB(GetYUVFrame());
 }
 
 

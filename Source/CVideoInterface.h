@@ -33,8 +33,10 @@ public:
 	virtual bool StartVideo(const CNetworkInterface& network);
 	virtual bool StopVideo(const CNetworkInterface& network);
 
-	virtual commands::bebop::video::TDecodedFrame GetDecodedFrame() const override;
-	virtual commands::bebop::video::TRawFrame GetRawFrame() const override;
+	virtual bool HasFrame() const override;
+	virtual commands::bebop::video::TDecodedFrame GetDecodedFrame() override;
+	virtual commands::bebop::video::TRawFrame GetYUVFrame() const override;
+	virtual commands::bebop::video::TRawFrame GetRGBFrame() const override;
 
 private:
 	static uint8_t* FrameCompleteCallback (eARSTREAM_READER_CAUSE cause, uint8_t *frame, uint32_t frameSize, int numberOfSkippedFrames, int isFlushFrame, uint32_t *newBufferCapacity, void *custom);
@@ -52,8 +54,8 @@ private:
 		uint32_t m_videoFrameSize;
 		uint8_t *m_videoFrame;
 		FILE *m_videoFile;
-		std::list<commands::bebop::video::TRawFrame> m_rawFrames;
-		std::list<commands::bebop::video::TDecodedFrame> m_decodedFrames;
+		mutable std::list<commands::bebop::video::TRawFrame> m_rawFrames;
+		mutable std::list<commands::bebop::video::TDecodedFrame> m_decodedFrames;
 	}* m_VideoStream;
 };
 

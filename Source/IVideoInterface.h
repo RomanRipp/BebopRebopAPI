@@ -15,8 +15,10 @@ namespace rebop {
 	class IVideoInterface
 	{
 	public:
-		virtual commands::bebop::video::TDecodedFrame GetDecodedFrame() const = 0;
-		virtual commands::bebop::video::TRawFrame GetRawFrame() const = 0;
+		virtual bool HasFrame() const = 0;
+		virtual commands::bebop::video::TDecodedFrame GetDecodedFrame() = 0;
+		virtual commands::bebop::video::TRawFrame GetYUVFrame() const = 0;
+		virtual commands::bebop::video::TRawFrame GetRGBFrame() const = 0;
 	};
 }
 

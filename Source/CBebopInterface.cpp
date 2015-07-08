@@ -616,7 +616,7 @@ bool CBebopInterface::StopVideo()
 	return m_videoInterface.StopVideo(m_networkInterface);
 }
 
-IVideoInterface CBebopInterface::GetVideo() const
+IVideoInterface& CBebopInterface::GetVideo()
 {
 	return m_videoInterface;
 }
