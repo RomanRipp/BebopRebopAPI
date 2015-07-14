@@ -131,6 +131,8 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
     uint8_t *ret = nullptr;
     CVideoStream *videoStream = (CVideoStream *)custom;
 
+    LOG(INFO) << "Frame received";
+
     switch(cause)
     {
         case ARSTREAM_READER_CAUSE_FRAME_COMPLETE:
