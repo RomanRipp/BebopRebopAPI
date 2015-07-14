@@ -14,7 +14,7 @@ CPP_SRCS += \
 ../Source/CBebopState.cpp \
 ../Source/CVideoDecoder.cpp \
 ../Source/Utility.cpp \
-../Source/main.cpp \
+../Source/Tests/main.cpp \
 
 OBJS += \
 ./Source/CBebopInterface.o \
@@ -27,7 +27,7 @@ OBJS += \
 ./Source/CVideoDecoder.o \
 ./Source/CBebopState.o \
 ./Source/Utility.o \
-./Source/main.o \
+./Source/Tests/main.o \
 
 CPP_DEPS += \
 ./Source/CBebopInterface.d \
@@ -40,7 +40,7 @@ CPP_DEPS += \
 ./Source/CVideoDecoder.d \
 ./Source/CBebopState.d \
 ./Source/Utility.d \
-./Source/main.d \
+./Source/Tests/main.d \
 
 # Each subdirectory must supply rules for building sources it contributes
 Source/%.o: ../Source/%.cpp
