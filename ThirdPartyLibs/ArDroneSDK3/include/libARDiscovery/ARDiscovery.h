@@ -33,6 +33,8 @@
 
 #include <libARDiscovery/ARDISCOVERY_Connection.h>
 #include <libARDiscovery/ARDISCOVERY_Discovery.h>
+#include <libARDiscovery/ARDISCOVERY_NetworkConfiguration.h>
+#include <libARDiscovery/ARDISCOVERY_Device.h>
 #include <libARDiscovery/ARDISCOVERY_Error.h>
 
 #endif /* _ARDISCOVERY_H_ */

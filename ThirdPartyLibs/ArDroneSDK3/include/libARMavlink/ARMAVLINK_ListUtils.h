@@ -37,7 +37,7 @@
 #ifndef _ARMAVLINK_LIST_UTILS_H
 #define _ARMAVLINK_LIST_UTILS_H
 
-#include <libmavlink/common/mavlink.h>
+#include <mavlink/common/mavlink.h>
 
 /**
  * @brief a list of mission item.

@@ -17,7 +17,7 @@ old_library='libarupdater.a'
 inherited_linker_flags='  -framework CoreBluetooth'
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib /Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib/libardatatransfer.la /Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib/libarutils.la /Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib/libardiscovery.la /Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib/libarsal.la /Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib/libcurl.la -lssl -lcrypto -lz /Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib/libjson.la'
+dependency_libs=' -L/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libardatatransfer.la /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libarutils.la /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libardiscovery.la /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libarnetwork.la /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libarnetworkal.la /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libarsal.la /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libcurl.la -lssl -lcrypto -lz /Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib/libjson.la'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install/lib'
+libdir='/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib'

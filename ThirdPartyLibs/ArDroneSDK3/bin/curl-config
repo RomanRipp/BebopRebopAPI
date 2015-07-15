@@ -21,7 +21,7 @@
 #
 ###########################################################################
 
-prefix=/Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install
+prefix=/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install
 exec_prefix=${prefix}
 includedir=${prefix}/include
 cppflag_curl_staticlib=
@@ -148,7 +148,7 @@ while test $# -gt 0; do
            CURLLIBDIR=""
         fi
         if test "Xyes" = "Xyes"; then
-          echo ${CURLLIBDIR}-lcurl -lssl -lcrypto -lz
+          echo ${CURLLIBDIR}-lcurl -lssl -lcrypto -lssl -lcrypto -lz
         else
           echo ${CURLLIBDIR}-lcurl
         fi
@@ -156,7 +156,7 @@ while test $# -gt 0; do
 
     --static-libs)
         if test "Xyes" != "Xno" ; then
-          echo ${exec_prefix}/lib/libcurl.a  -lssl -lcrypto -lz
+          echo ${exec_prefix}/lib/libcurl.a -L/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install/lib -lssl -lcrypto -lssl -lcrypto -lz
         else
           echo "curl was built with static libraries disabled" >&2
           exit 1
@@ -164,7 +164,7 @@ while test $# -gt 0; do
         ;;
 
     --configure)
-        echo " '--prefix=/Users/romanripp/Documents/xCode/DroneProjects/ARSDKBuildUtils/Targets/Unix/Install' '--disable-ares' '--disable-file' '--disable-ldap' '--disable-ldaps' '--disable-rtsp' '--disable-proxy' '--disable-dict' '--disable-telnet' '--disable-tftp' '--disable-pop3' '--disable-imap' '--disable-smtp' '--disable-gopher' '--disable-manual' '--disable-verbose' '--disable-sspi' '--disable-ntlm-wb' '--disable-tls-srp' '--without-winssl' '--without-gnutls' '--without-polarssl' '--without-cyassl' '--without-nss' '--without-axtls' '--without-ca-bundle' '--without-libmetalink' '--without-libssh2' '--without-librtmp' '--without-winidn' 'CFLAGS=-fPIC  -g' '--enable-debug' 'INSTALL=/usr/bin/install -C'"
+        echo " '--prefix=/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install' '--disable-ares' '--disable-file' '--disable-ldap' '--disable-ldaps' '--disable-rtsp' '--disable-proxy' '--disable-dict' '--disable-telnet' '--disable-tftp' '--disable-pop3' '--disable-imap' '--disable-smtp' '--disable-gopher' '--disable-manual' '--disable-verbose' '--disable-sspi' '--disable-ntlm-wb' '--disable-tls-srp' '--with-ssl=/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install' '--without-winssl' '--without-gnutls' '--without-polarssl' '--without-cyassl' '--without-nss' '--without-axtls' '--without-ca-bundle' '--without-libmetalink' '--without-libssh2' '--without-librtmp' '--without-winidn' 'CFLAGS=-fPIC  -g' 'INSTALL=/usr/bin/install -C'"
         ;;
 
     *)

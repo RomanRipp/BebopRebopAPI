@@ -38,7 +38,7 @@
 #define _ARMAVLINK_MISSIONITEMUTILS_h
 
 #include <libARMavlink/ARMAVLINK_Error.h>
-#include <libmavlink/common/mavlink.h>
+#include <mavlink/common/mavlink.h>
 
 /**
  * @brief Fill a mission item with the given params and the default params
