@@ -25,11 +25,11 @@ public:
 	virtual ~CVideoDecoder();
 
 	virtual bool Init();
-	virtual TDecodedFrame DecodeFrame(const TRawFrame& rawFrame);
-	virtual TRawFrame YVUtoRGB(const TRawFrame& yvuframe) const;
+	virtual TDecodedFrame DecodeFrame(const TRawFrame& rawFrame) const;
+	virtual TDecodedFrame YVUtoRGB(const TDecodedFrame& yvuframe) const;
 
 private:
-	virtual TDecodedFrame FFMPEGDecodeFrame(const TRawFrame& rawFrame);
+	virtual TDecodedFrame FFMPEGDecodeFrame(const TRawFrame& rawFrame) const;
 	void YVUtoRGBPixel(int y, int u, int v, uint8_t& r, uint8_t& g, uint8_t& b) const;
 
 	struct FFMPEGDecoder
@@ -40,7 +40,7 @@ private:
 		AVPacket m_avpkt;
 		uint8_t m_outputData;
 		int m_outputDataSize;
-	} m_ffmpegDecoder;
+	} mutable m_ffmpegDecoder;
 
 };
 

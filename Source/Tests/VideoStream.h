@@ -1,9 +1,11 @@
 /*
- * VideoStream.cpp
+ * VideoStream.h
  *
  *  Created on: Jun 11, 2015
  *      Author: Roman
  */
+
+#pragma once
 
 #include <gtest/gtest.h>
 #include <iostream>
@@ -12,6 +14,12 @@
 
 namespace rebop{
 namespace unitTests{
+
+	TEST(BebopApiUnitTests, StartMPlayer)
+	{
+		system("/usr/local/bin/mplayer");
+		ASSERT_TRUE(true);
+	}
 
 	TEST(BebopApiUnitTests, RawVideoStreaming)
 	{

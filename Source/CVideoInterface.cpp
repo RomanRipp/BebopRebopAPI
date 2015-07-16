@@ -144,21 +144,25 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
             	util::SpinLock lock(videoStream->m_lock);
             	commands::bebop::video::TRawFrame tFrame(frame, frameSize, isFlushFrame, numberOfSkippedFrames);
 
-				videoStream->m_rawFrames.push_back(tFrame);
+            	if (tFrame.IsFlushFrame())
+            	{
+            		videoStream->m_rawFrames.clear();
+            	}
 
+				videoStream->m_rawFrames.push_back(tFrame);
             	if (videoStream->m_rawFrames.size() > CVideoSettings::VIDEO_CONTAINER_SIZE)
             	{
             		videoStream->m_rawFrames.pop_front();
             	}
             }
 
-            /* Again, don't write files in this thread, that is just for the example :) */
-//            if (videoStream->m_videoFile)
-//            {
-//            	LOG( INFO ) << "File is ok";
-//            	fwrite(frame, frameSize, 1, videoStream->m_videoFile);
-//            	fflush(videoStream->m_videoFile);
-//            }
+            // Test wtite video to a file
+            // if (videoStream->m_videoFile)
+            // {
+            //		LOG( INFO ) << "File is ok";
+            // 		fwrite(frame, frameSize, 1, videoStream->m_videoFile);
+            // 		fflush(videoStream->m_videoFile);
+            // }
             break;
         case ARSTREAM_READER_CAUSE_FRAME_TOO_SMALL:
             /* This case should not happen, as we've allocated a frame pointer to the maximum possible size. */
@@ -184,28 +188,47 @@ bool CVideoInterface::HasFrame() const
 	return (m_VideoStream->m_rawFrames.size() > 0);
 }
 
-commands::bebop::video::TDecodedFrame CVideoInterface::GetDecodedFrame()
+commands::bebop::video::TDecodedFrame CVideoInterface::GetDecodedFrame(commands::bebop::video::EncodingType encoding) const
 {
-	const auto& rawFrame(GetYUVFrame());
+	auto decodedFrame = commands::bebop::video::TDecodedFrame();
+	switch(encoding)
+	{
+	case commands::bebop::video::EncodingType::YVU:
+		decodedFrame = GetYUVFrame();
+		break;
+	case commands::bebop::video::EncodingType::RGB:
+		decodedFrame = GetRGBFrame();
+		break;
+	default:
+		LOG( ERROR ) << "Invalid decoding format";
+	}
 
-	return m_videoDecoder.DecodeFrame(rawFrame);
+	return decodedFrame;
 }
 
-commands::bebop::video::TRawFrame CVideoInterface::GetYUVFrame() const
+commands::bebop::video::TDecodedFrame CVideoInterface::GetYUVFrame() const
 {
 	util::SpinLock lock(m_VideoStream->m_lock);
 	if (m_VideoStream->m_rawFrames.size() < 1)
 	{
 		LOG( ERROR ) << "No Frames Available!";
-		return commands::bebop::video::TRawFrame();
+		return commands::bebop::video::TDecodedFrame();
 	}
 
-	auto rawFrame(m_VideoStream->m_rawFrames.back());
+	const auto& rawFrame(m_VideoStream->m_rawFrames.back());
+	const auto& decodedFrame(m_videoDecoder.DecodeFrame(rawFrame));
+
+	if (!decodedFrame.IsValid())
+	{
+		LOG( ERROR ) << "Decoding failed";
+		return commands::bebop::video::TDecodedFrame();
+	}
+
 	m_VideoStream->m_rawFrames.pop_back();
-	return rawFrame;
+	return decodedFrame;
 }
 
-commands::bebop::video::TRawFrame CVideoInterface::GetRGBFrame() const
+commands::bebop::video::TDecodedFrame CVideoInterface::GetRGBFrame() const
 {
 	return m_videoDecoder.YVUtoRGB(GetYUVFrame());
 }

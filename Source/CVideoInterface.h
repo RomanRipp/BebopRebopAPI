@@ -34,9 +34,9 @@ public:
 	virtual bool StopVideo(const CNetworkInterface& network);
 
 	virtual bool HasFrame() const override;
-	virtual commands::bebop::video::TDecodedFrame GetDecodedFrame() override;
-	virtual commands::bebop::video::TRawFrame GetYUVFrame() const override;
-	virtual commands::bebop::video::TRawFrame GetRGBFrame() const override;
+	virtual commands::bebop::video::TDecodedFrame GetDecodedFrame(commands::bebop::video::EncodingType ecnoding) const override;
+	virtual commands::bebop::video::TDecodedFrame GetYUVFrame() const override;
+	virtual commands::bebop::video::TDecodedFrame GetRGBFrame() const override;
 
 private:
 	static uint8_t* FrameCompleteCallback (eARSTREAM_READER_CAUSE cause, uint8_t *frame, uint32_t frameSize, int numberOfSkippedFrames, int isFlushFrame, uint32_t *newBufferCapacity, void *custom);

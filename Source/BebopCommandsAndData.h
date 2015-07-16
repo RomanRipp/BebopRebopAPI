@@ -167,14 +167,14 @@ namespace video
 	enum class EncodingType
 	{
 		YVU,
-		RGBA
+		RGB
 	};
 
 	struct FrameConponent
 	{
 	    uint8_t *data; /**< data buffer*/
-	    uint32_t lineSize; /**< size of each line of the component */
-	    uint32_t size; /**< size of the buffer */
+	    int lineSize; /**< size of each line of the component */
+	    int size; /**< size of the buffer */
 	};
 
 	class TDecodedFrame : public TRawFrame

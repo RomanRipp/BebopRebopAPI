@@ -2,7 +2,7 @@
 //// Run all the tests that were declared with TEST()
 
 #include <gtest/gtest.h>
-#include "VideoStream.cpp"
+#include "VideoStream.h"
 
 int main(int argc, char **argv)
 {
