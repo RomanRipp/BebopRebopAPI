@@ -1,0 +1,12 @@
+prefix=/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: OpenSSL-libcrypto
+Description: OpenSSL cryptography library
+Version: 1.0.2c
+Requires: 
+Libs: -L${libdir} -lcrypto
+Libs.private: -lz
+Cflags: -I${includedir} 

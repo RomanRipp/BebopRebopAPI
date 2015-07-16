@@ -1,0 +1,9 @@
+prefix=/Users/Roman/Documents/eclipse/Cworkspace/ARDroneSDK3/ARSDKBuildUtils/Targets/Unix/Install
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: OpenSSL
+Description: Secure Sockets Layer and cryptography libraries and tools
+Version: 1.0.2c
+Requires: libssl libcrypto
