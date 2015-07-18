@@ -3,6 +3,7 @@
 
 #include <gtest/gtest.h>
 #include "VideoStream.h"
+#include "Utility.h"
 
 int main(int argc, char **argv)
 {

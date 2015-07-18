@@ -11,17 +11,19 @@
 #include <iostream>
 #include <unistd.h>
 #include "../CBebopInterface.h"
+#include "../Utility.h"
 
 namespace rebop{
 namespace unitTests{
 
-	TEST(BebopApiUnitTests, StartMPlayer)
+	TEST(Video, StartMPlayer)
 	{
-		system("/usr/local/bin/mplayer");
+		system("mplayer ../TestFiles/test_video");
+
 		ASSERT_TRUE(true);
 	}
 
-	TEST(BebopApiUnitTests, RawVideoStreaming)
+	TEST(Video, RawStream)
 	{
 		CBebopInterface bebop;
 		ASSERT_TRUE(bebop.Initialize());
@@ -31,6 +33,8 @@ namespace unitTests{
 
 		LOG(INFO) << "Create file";
 		auto file = fopen("./video_fifo", "w");
+
+		bool opened(false);
 		int count(0);
 		while(count < 500)
 		{
@@ -38,22 +42,29 @@ namespace unitTests{
 			if (videoInterface.HasFrame())
 			{
 				LOG(INFO) << "write frame";
-				auto rawFrame(videoInterface.GetRGBFrame());
+				auto rawFrame(videoInterface.GetRawFrame());
 				fwrite(rawFrame.GetRawData(), rawFrame.GetRawFrameDataSize(), 1, file);
 				fflush (file);
+
+				if (!opened)
+				{
+					system("/usr/local/bin/mplayer /Users/Roman/Documents/eclipse/Cworkspace/BebopRebopAPI/Build/video_fifo");
+					opened = true;
+				}
+
 				count++;
 			}
-			usleep(70*1000);
+			usleep(50*1000);
 		}
 
 		fclose(file);
-		system("/usr/local/bin/mplayer video_fifo");
+
 		ASSERT_TRUE(bebop.StopVideo());
 		bebop.Cleanup();
 		ASSERT_TRUE(true);
 	}
 
-//	TEST(BebopApiUnitTests, RawVideoStreaming)
+//	TEST(Video, RawVideoStreaming)
 //	{
 //
 //		pid_t child = 0;

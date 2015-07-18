@@ -4,12 +4,17 @@
 #include <rapidjson/document.h>
 #include <atomic>
 
+#include "BebopCommandsAndData.h"
+
 // Semi-safe pointer deletion
 #define SafeDelete(pPtr) { delete pPtr; pPtr = nullptr; }
 
 namespace util
 {
 	bool ParseIntFromJsonString( const std::string &jsonStringIn, const std::string &keyIn, int &valueOut );
+
+	bool ReadFramesFromFile(const std::string& fileName, std::vector<rebop::commands::bebop::video::TRawFrame>& frames);
+	bool WriteFramesToFile(const std::string& fileName, const std::vector<rebop::commands::bebop::video::TRawFrame>& frames);
 
 	class SpinLock
 	{

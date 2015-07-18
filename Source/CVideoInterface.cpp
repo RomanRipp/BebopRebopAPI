@@ -131,7 +131,7 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
     uint8_t *ret = nullptr;
     CVideoStream *videoStream = (CVideoStream *)custom;
 
-    LOG(INFO) << "Frame received";
+    //LOG(INFO) << "Frame received";
 
     switch(cause)
     {
@@ -146,6 +146,7 @@ uint8_t* CVideoInterface::FrameCompleteCallback (eARSTREAM_READER_CAUSE cause
 
             	if (tFrame.IsFlushFrame())
             	{
+            		LOG(INFO) << "Flush frame";
             		videoStream->m_rawFrames.clear();
             	}
 
@@ -186,6 +187,19 @@ bool CVideoInterface::HasFrame() const
 {
 	util::SpinLock lock(m_VideoStream->m_lock);
 	return (m_VideoStream->m_rawFrames.size() > 0);
+}
+
+commands::bebop::video::TRawFrame CVideoInterface::GetRawFrame() const
+{
+	const auto& rawFrame(m_VideoStream->m_rawFrames.back());
+	if (!rawFrame.IsValid())
+	{
+		LOG( ERROR ) << "Decoding failed";
+		return commands::bebop::video::TRawFrame();
+	}
+
+	m_VideoStream->m_rawFrames.pop_back();
+	return rawFrame;
 }
 
 commands::bebop::video::TDecodedFrame CVideoInterface::GetDecodedFrame(commands::bebop::video::EncodingType encoding) const

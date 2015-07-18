@@ -34,6 +34,7 @@ public:
 	virtual bool StopVideo(const CNetworkInterface& network);
 
 	virtual bool HasFrame() const override;
+	virtual commands::bebop::video::TRawFrame GetRawFrame() const override;
 	virtual commands::bebop::video::TDecodedFrame GetDecodedFrame(commands::bebop::video::EncodingType ecnoding) const override;
 	virtual commands::bebop::video::TDecodedFrame GetYUVFrame() const override;
 	virtual commands::bebop::video::TDecodedFrame GetRGBFrame() const override;

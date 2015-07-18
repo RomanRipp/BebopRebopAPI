@@ -16,6 +16,7 @@ namespace rebop {
 	{
 	public:
 		virtual bool HasFrame() const = 0;
+		virtual commands::bebop::video::TRawFrame GetRawFrame() const = 0;
 		virtual commands::bebop::video::TDecodedFrame GetDecodedFrame(commands::bebop::video::EncodingType ecnoding) const = 0;
 		virtual commands::bebop::video::TDecodedFrame GetYUVFrame() const = 0;
 		virtual commands::bebop::video::TDecodedFrame GetRGBFrame() const = 0;
