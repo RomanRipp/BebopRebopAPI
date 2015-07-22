@@ -49,7 +49,7 @@ bool CVideoDecoder::Init()
 	m_ffmpegDecoder.m_codecCtx.codec_id = AV_CODEC_ID_H264;
 	m_ffmpegDecoder.m_codecCtx.skip_idct = AVDISCARD_DEFAULT;
 
-	if (!avcodec_open2(&m_ffmpegDecoder.m_codecCtx, &m_ffmpegDecoder.m_codec, nullptr))
+	if (avcodec_open2(&m_ffmpegDecoder.m_codecCtx, &m_ffmpegDecoder.m_codec, nullptr) != 0)
 	{
 		LOG(ERROR) << "Failed to open codec";
 		return false;
@@ -57,7 +57,7 @@ bool CVideoDecoder::Init()
 
 	//Allocate frame
 	//Deprecated
-	//m_ffmpegDecoder.m_decodedFrame = *avcodec_alloc_frame();
+	m_ffmpegDecoder.m_decodedFrame = *avcodec_alloc_frame();
 
 	// Initialize packet
 	av_init_packet(&m_ffmpegDecoder.m_avpkt);
@@ -128,7 +128,11 @@ TDecodedFrame CVideoDecoder::FFMPEGDecodeFrame(const TRawFrame& rawFrame) const
 
 	while (m_ffmpegDecoder.m_avpkt.size > 0)
 	{
-		length = avcodec_decode_video2(&m_ffmpegDecoder.m_codecCtx, &m_ffmpegDecoder.m_decodedFrame, &frameFinished, &m_ffmpegDecoder.m_avpkt);
+		length = avcodec_decode_video2(&m_ffmpegDecoder.m_codecCtx,
+				&m_ffmpegDecoder.m_decodedFrame,
+				&frameFinished,
+				&m_ffmpegDecoder.m_avpkt);
+
 		if (length > 0)
 		{
 			if (frameFinished)
@@ -138,25 +142,25 @@ TDecodedFrame CVideoDecoder::FFMPEGDecodeFrame(const TRawFrame& rawFrame) const
 				//Y component
 				components.push_back(
 				{
-					m_ffmpegDecoder.m_decodedFrame.data[0],
-					m_ffmpegDecoder.m_decodedFrame.linesize[0],
-					m_ffmpegDecoder.m_decodedFrame.linesize[0] * m_ffmpegDecoder.m_decodedFrame.height
+//					m_ffmpegDecoder.m_decodedFrame->data[0],
+//					m_ffmpegDecoder.m_decodedFrame->linesize[0],
+//					m_ffmpegDecoder.m_decodedFrame->linesize[0] * m_ffmpegDecoder.m_decodedFrame->height
 				});
 
 				//U component
 				components.push_back(
 				{
-					m_ffmpegDecoder.m_decodedFrame.data[1],
-					m_ffmpegDecoder.m_decodedFrame.linesize[1],
-					(m_ffmpegDecoder.m_decodedFrame.linesize[1] * (m_ffmpegDecoder.m_decodedFrame.height / 2))
+//					m_ffmpegDecoder.m_decodedFrame->data[1],
+//					m_ffmpegDecoder.m_decodedFrame->linesize[1],
+//					(m_ffmpegDecoder.m_decodedFrame->linesize[1] * (m_ffmpegDecoder.m_decodedFrame->height / 2))
 				});
 
 				//V component
 				components.push_back(
 				{
-					m_ffmpegDecoder.m_decodedFrame.data[2],
-					m_ffmpegDecoder.m_decodedFrame.linesize[2],
-					(m_ffmpegDecoder.m_decodedFrame.linesize[2] * (m_ffmpegDecoder.m_decodedFrame.height / 2))
+//					m_ffmpegDecoder.m_decodedFrame->data[2],
+//					m_ffmpegDecoder.m_decodedFrame->linesize[2],
+//					(m_ffmpegDecoder.m_decodedFrame->linesize[2] * (m_ffmpegDecoder.m_decodedFrame->height / 2))
 				});
 
 				decodedFrame = TDecodedFrame(rawFrame,

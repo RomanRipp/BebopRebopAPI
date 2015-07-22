@@ -13,12 +13,40 @@
 #include "../CBebopInterface.h"
 #include "../Utility.h"
 
+extern std::string BIN_PATH;
+
 namespace rebop{
 namespace unitTests{
 
+
+	std::string GetTestDir()
+	{
+		//Terrible code goes here
+		std::string testDir(BIN_PATH);
+		auto separator(testDir.find_last_of("/"));
+		if (std::string::npos != separator)
+		{
+			testDir.erase(separator, testDir.size());
+		}
+		separator = testDir.find_last_of("/");
+		if (std::string::npos != separator)
+		{
+			testDir.erase(separator, testDir.size());
+		}
+		testDir += "/TestFiles";
+
+		LOG(INFO) << testDir;
+		return testDir;
+	}
+
 	TEST(Video, StartMPlayer)
 	{
-		system("mplayer ../TestFiles/test_video");
+		auto testFile(GetTestDir());
+		testFile += "/test_video";
+
+		auto cmd(std::string("mplayer "));
+		cmd += testFile;
+		system(cmd.c_str());
 
 		ASSERT_TRUE(true);
 	}
@@ -48,7 +76,7 @@ namespace unitTests{
 
 				if (!opened)
 				{
-					system("/usr/local/bin/mplayer /Users/Roman/Documents/eclipse/Cworkspace/BebopRebopAPI/Build/video_fifo");
+					//system("mplayer BebopRebopAPI/Build/video_fifo");
 					opened = true;
 				}
 
@@ -64,70 +92,39 @@ namespace unitTests{
 		ASSERT_TRUE(true);
 	}
 
-//	TEST(Video, RawVideoStreaming)
-//	{
-//
-//		pid_t child = 0;
-////		if ((child = fork()) == 0)
-////		{
-//			// redirect stdout and stderr of mplayer to dev/null to avoid messing with ncurse
-////			auto stdout_fd = fopen("/dev/null", 0);
-////			std::dup2(stdout_fd, 1);
-////			fclose(stdout_fd);
-//
-////			auto stderr_fd = fopen("/dev/null", 0);
-////			std::dup2(stderr_fd, 1);
-////			fclose(stderr_fd);
-//
-////			execlp("mplayer", "mplayer", "./video_decoded_fifo", "-demuxer", "rawvideo", "-rawvideo", "w=640:h=368:fps=30:format=i420", ">/dev/null", "2>/dev/null", NULL);
-////		}
-//
-//		CBebopInterface bebop;
-//		ASSERT_TRUE(bebop.Initialize());
-//		ASSERT_TRUE(bebop.IsConnected());
-//		ASSERT_TRUE(bebop.StartVideo());
-//		const auto& videoInterface(bebop.GetVideo());
-//
-//		auto file = fopen("./video_decoded_fifo", "w");
-//		int count(0);
-//		while(count < 500)
+	TEST(Video, DecodeStream)
+	{
+		CVideoDecoder decoder;
+		LOG(INFO) << "Initialize decoder";
+		ASSERT_TRUE(decoder.Init());
+
+		LOG(INFO) << "Get test video file";
+		auto testDir(GetTestDir());
+		auto testFile(testDir);
+		testFile += "/test_video";
+		LOG(INFO) << testFile;
+
+		std::vector<TRawFrame> frames;
+		std::vector<TDecodedFrame> decodedFrames;
+		ASSERT_TRUE(util::ReadFramesFromFile(testFile, frames));
+		ASSERT_FALSE(frames.empty());
+
+		testFile = testDir;
+		testFile += "/test_video2";
+		ASSERT_TRUE(util::WriteFramesToFile(testFile, frames));
+		auto cmd(std::string("mplayer "));
+		cmd += testFile;
+		system(cmd.c_str());
+
+//		for (auto frame : frames)
 //		{
-//			if (videoInterface.HasFrame())
-//			{
-//				auto decodedFrame(videoInterface.GetDecodedFrame());
-//
-//                AVFrame *avFrame = avcodec_alloc_frame();
-//                if (avFrame != NULL)
-//                {
-//                    avFrame->width = decodedFrame->width;
-//                    avFrame->height = decodedFrame->height;
-//                    avFrame->format = AV_PIX_FMT_YUV420P;
-//
-//                    avpicture_fill((AVPicture*)avFrame, NULL, PIX_FMT_YUV420P, decodedFrame->width, decodedFrame->height);
-//                    avFrame->linesize[0] = decodedFrame->componentArray[0].lineSize;
-//                    avFrame->linesize[1] = decodedFrame->componentArray[1].lineSize;
-//                    avFrame->linesize[2] = decodedFrame->componentArray[2].lineSize;
-//
-//                    avFrame->data[0] = decodedFrame->componentArray[0].data;
-//                    avFrame->data[1] = decodedFrame->componentArray[1].data;
-//                    avFrame->data[2] = decodedFrame->componentArray[2].data;
-//
-//                    avpicture_layout((AVPicture*)avFrame, PIX_FMT_YUV420P, decodedFrame->width, decodedFrame->height, decodedOut, pic_size);
-//                    avcodec_free_frame(&avFrame);
-//                }
-//
-//				fwrite(decodedFrame.GetRawData(), decodedFrame.GetRawFrameDataSize(), 1, file);
-//				fflush (file);
-//				count++;
-//			}
+//			auto decodedFrame(decoder.DecodeFrame(frame));
+//			decodedFrames.push_back(decodedFrame);
 //		}
-//
-//		fclose(file);
-//		system("/usr/local/bin/mplayer ./video_decoded_fifo -demuxer rawvideo -rawvideo w=640:h=368:fps=30:format=i420");
-//		ASSERT_TRUE(bebop.StopVideo());
-//		bebop.Cleanup();
-//		ASSERT_TRUE(true);
-//	}
+
+		//ASSERT_FALSE(decodedFrames.empty());
+		ASSERT_TRUE(true);
+	}
 
 
 }

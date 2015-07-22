@@ -38,7 +38,7 @@ private:
 		AVCodecContext m_codecCtx;
 		AVFrame m_decodedFrame;
 		AVPacket m_avpkt;
-		uint8_t m_outputData;
+		uint8_t* m_outputData;
 		int m_outputDataSize;
 	} mutable m_ffmpegDecoder;
 

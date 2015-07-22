@@ -142,10 +142,7 @@ namespace video
 			  m_numberOfSkippedFrames(numberOfSkippedFrames),
 			  m_isFlushFrame(isFlushFrame),
 			  m_isValid(true) {}
-		~TRawFrame()
-		{
-			//delete m_frameData;
-		}
+		~TRawFrame() { }
 		uint8_t* GetRawData() const { return m_frameData; }
 		uint32_t GetRawFrameDataSize() const { return m_frameDataSize; }
 		int GetNumberOfSkippedFrames() const { return m_numberOfSkippedFrames; }

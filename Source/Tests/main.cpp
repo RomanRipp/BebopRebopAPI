@@ -5,8 +5,11 @@
 #include "VideoStream.h"
 #include "Utility.h"
 
+std::string BIN_PATH;
+
 int main(int argc, char **argv)
 {
 	testing::InitGoogleTest(&argc, argv);
+	BIN_PATH = std::string(argv[0]);
 	return RUN_ALL_TESTS();
 }
