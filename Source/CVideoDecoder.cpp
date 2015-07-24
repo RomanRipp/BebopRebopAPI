@@ -65,18 +65,6 @@ bool CVideoDecoder::Init()
 	return true;
 }
 
-TDecodedFrame CVideoDecoder::DecodeFrame(const TRawFrame& rawFrame) const
-{
-
-	if (!rawFrame.IsValid())
-	{
-		LOG(ERROR) << "failed to decode frame";
-		return TDecodedFrame();
-	}
-
-	return FFMPEGDecodeFrame(rawFrame);
-}
-
 TDecodedFrame CVideoDecoder::YVUtoRGB(const TDecodedFrame& yvuframe) const
 {
 
@@ -116,8 +104,14 @@ TDecodedFrame CVideoDecoder::YVUtoRGB(const TDecodedFrame& yvuframe) const
 	return TDecodedFrame();
 }
 
-TDecodedFrame CVideoDecoder::FFMPEGDecodeFrame(const TRawFrame& rawFrame) const
+TDecodedFrame CVideoDecoder::DecodeFrame(const TRawFrame& rawFrame) const
 {
+	if (!rawFrame.IsValid())
+	{
+		LOG(ERROR) << "failed to decode frame";
+		return TDecodedFrame();
+	}
+
 	/* -- Decode one frame with FFMPEG -- */
 	int frameFinished(0);
 	int length(0);
@@ -142,25 +136,25 @@ TDecodedFrame CVideoDecoder::FFMPEGDecodeFrame(const TRawFrame& rawFrame) const
 				//Y component
 				components.push_back(
 				{
-//					m_ffmpegDecoder.m_decodedFrame->data[0],
-//					m_ffmpegDecoder.m_decodedFrame->linesize[0],
-//					m_ffmpegDecoder.m_decodedFrame->linesize[0] * m_ffmpegDecoder.m_decodedFrame->height
+					m_ffmpegDecoder.m_decodedFrame.data[0],
+					m_ffmpegDecoder.m_decodedFrame.linesize[0],
+					m_ffmpegDecoder.m_decodedFrame.linesize[0] * m_ffmpegDecoder.m_decodedFrame.height
 				});
 
 				//U component
 				components.push_back(
 				{
-//					m_ffmpegDecoder.m_decodedFrame->data[1],
-//					m_ffmpegDecoder.m_decodedFrame->linesize[1],
-//					(m_ffmpegDecoder.m_decodedFrame->linesize[1] * (m_ffmpegDecoder.m_decodedFrame->height / 2))
+					m_ffmpegDecoder.m_decodedFrame.data[1],
+					m_ffmpegDecoder.m_decodedFrame.linesize[1],
+					(m_ffmpegDecoder.m_decodedFrame.linesize[1] * (m_ffmpegDecoder.m_decodedFrame.height / 2))
 				});
 
 				//V component
 				components.push_back(
 				{
-//					m_ffmpegDecoder.m_decodedFrame->data[2],
-//					m_ffmpegDecoder.m_decodedFrame->linesize[2],
-//					(m_ffmpegDecoder.m_decodedFrame->linesize[2] * (m_ffmpegDecoder.m_decodedFrame->height / 2))
+					m_ffmpegDecoder.m_decodedFrame.data[2],
+					m_ffmpegDecoder.m_decodedFrame.linesize[2],
+					(m_ffmpegDecoder.m_decodedFrame.linesize[2] * (m_ffmpegDecoder.m_decodedFrame.height / 2))
 				});
 
 				decodedFrame = TDecodedFrame(rawFrame,

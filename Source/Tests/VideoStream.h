@@ -102,25 +102,24 @@ namespace unitTests{
 		auto testDir(GetTestDir());
 		auto testFile(testDir);
 		testFile += "/test_video";
-		LOG(INFO) << testFile;
 
 		std::vector<TRawFrame> frames;
 		std::vector<TDecodedFrame> decodedFrames;
 		ASSERT_TRUE(util::ReadFramesFromFile(testFile, frames));
 		ASSERT_FALSE(frames.empty());
 
-		testFile = testDir;
-		testFile += "/test_video2";
-		ASSERT_TRUE(util::WriteFramesToFile(testFile, frames));
-		auto cmd(std::string("mplayer "));
-		cmd += testFile;
-		system(cmd.c_str());
+//		testFile = testDir;
+//		testFile += "/test_video2";
+//		ASSERT_TRUE(util::WriteFramesToFile(testFile, frames));
+//		auto cmd(std::string("mplayer "));
+//		cmd += testFile;
+//		system(cmd.c_str());
 
-//		for (auto frame : frames)
-//		{
-//			auto decodedFrame(decoder.DecodeFrame(frame));
-//			decodedFrames.push_back(decodedFrame);
-//		}
+		for (auto frame : frames)
+		{
+			auto decodedFrame(decoder.DecodeFrame(frame));
+			decodedFrames.push_back(decodedFrame);
+		}
 
 		//ASSERT_FALSE(decodedFrames.empty());
 		ASSERT_TRUE(true);

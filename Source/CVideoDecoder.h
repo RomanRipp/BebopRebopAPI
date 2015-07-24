@@ -29,7 +29,6 @@ public:
 	virtual TDecodedFrame YVUtoRGB(const TDecodedFrame& yvuframe) const;
 
 private:
-	virtual TDecodedFrame FFMPEGDecodeFrame(const TRawFrame& rawFrame) const;
 	void YVUtoRGBPixel(int y, int u, int v, uint8_t& r, uint8_t& g, uint8_t& b) const;
 
 	struct FFMPEGDecoder
